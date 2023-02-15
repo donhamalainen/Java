@@ -1,0 +1,75 @@
+Test 1 – version 2
+
+1. Create a student, the first student using the constructor with no parameters
+2. Create a student, the second student using the constructor with last name and first name,
+“Mouse” and “Mickey”, accordingly
+3. Create a student, the third student using the constructor with last name and first name, “Mouse”
+and “Minnie”, accordingly
+
+4. For the first student, set the first name to “Donald”
+5. For the first student, set the last name to “Duck”
+6. For the first student, set the number of bachelor credits to 120
+7. For the first student, set the number of master credits to 180
+8. For the first student, set the title of the master’s thesis to “Masters thesis title”
+9. For the first student, set the title of the bachelor thesis to “Bachelor thesis title”
+10. For the first student, set the start year of the studies to 2001
+11. For the first student, set graduation year to 2020
+
+12. For the second student, set the person id to “221199-123A”
+13. For the second student, set the title of the bachelor thesis to “A new exciting purpose of life”
+14. For the second student, set the number of bachelor credits to 65
+15. For the second student, set the number of master credits to 22
+
+16. For the third student, set the person id to “111111-3334”
+17. For the third student, set the number of bachelor credits to 215
+18. For the third student, set the number of master credits to 120
+19. For the third student, set the title of the master’s thesis to “Christmas - The most wonderful time
+of the year”
+20. For the third student, set the title of the bachelor thesis to “Dreaming of a white Christmas”
+21. For the third student, set the start year of the studies to 2018
+22. For the third student, set graduation year to 2022
+
+23. Print the details of the first student using toString method.
+24. Print the details of the second student using toString method.
+25. Print the details of the third student using toString method.
+26. Print the output when setting the person id “This is a string” to one of the students.
+27. Print the output when setting the person id “320187-1234” to one of the students.
+28. Print the output when setting the person id “11111111-3334” to one of the students.
+29. Print the output when setting the person id “121298-830A” to one of the students.
+
+– Expected output –
+
+Student id: 72
+FirstName: Donald, LastName: Duck
+Date of birth: "Not available"
+Status: The student has not graduated, yet
+StartYear: 2001 (studies have lasted for 22 years)
+BachelorCredits: 120.0 ==> Missing bachelor credits 60.0 (120.0/180.0)
+TitleOfBachelorThesis: "Bachelor thesis title"
+MasterCredits: 180.0 ==> All required master's credits completed (180.0/120.0)
+TitleOfMastersThesis: "Masters thesis title"
+
+Student id: 94
+FirstName: Mickey, LastName: Mouse
+Date of birth: 22.11.1999
+Status: The student has not graduated, yet
+StartYear: 2023 (studies have lasted for 0 years)
+BachelorCredits: 65.0 ==> Missing bachelor credits 115.0 (65.0/180.0)
+TitleOfBachelorThesis: "A new exciting purpose of life"
+MasterCredits: 22.0 ==> Missing master's credits 98.0 (22.0/120.0)
+TitleOfMastersThesis: "No title"
+
+Student id: 96
+FirstName: Minnie, LastName: Mouse
+Date of birth: "Not available"
+Status: The student has graduated in 2022
+StartYear: 2018 (studies lasted for 4 years)
+BachelorCredits: 215.0 ==> All required bachelor credits completed (215.0/180.0)
+TitleOfBachelorThesis: "Dreaming of a white Christmas"
+MasterCredits: 120.0 ==> All required master's credits completed (120.0/120.0)
+TitleOfMastersThesis: "Christmas - The most wonderful time of the year"
+
+Invalid birthday!
+Invalid birthday!
+Invalid birthday!
+Incorrect check mark!
