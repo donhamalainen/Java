@@ -1,4 +1,4 @@
-class Main {
+public class Main {
     public static void main(String[] args) {
         Student opiskelija = new Student();
         Student opiskelija2 = new Student("Mouse", "Micky");
@@ -10,7 +10,7 @@ class Main {
         opiskelija.setBachelorCredits(120);
         opiskelija.setMasterCredits(180);
         opiskelija.setTitleOfBachelorThesis("Bachelor thesis title");
-        opiskelija.setTitleOfMastersThesis("Masters thesis title");
+        opiskelija.setTitleOfMasterThesis("Masters thesis title");
         opiskelija.setStartYear(2001);
         opiskelija.setGraduationYear(2020);
         // 2. Opiskelija
@@ -22,7 +22,7 @@ class Main {
         opiskelija2.setMasterCredits(22);
         // 3. Opiskelija
         opiskelija3.setTitleOfBachelorThesis("Dreaming of a white Christmas");
-        opiskelija3.setTitleOfMastersThesis("Christmas - The most wonderful time of the year");
+        opiskelija3.setTitleOfMasterThesis("Christmas - The most wonderful time of the year");
         opiskelija3.setBachelorCredits(216);
         opiskelija3.setMasterCredits(120);
         opiskelija3.setStartYear(2018);

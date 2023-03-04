@@ -4,55 +4,43 @@
  * 
  * Random antaa meille numerot 1-100.
  * Year antaa meille nykyvuoden arvon.
- * SimpleDateFormat antaa meille mahdollisuuden formalisoida syntymäpäivä.
- * Date antaa meille mahdollisuuden päästä käsiksi Date kansioon.
  */
 import java.util.Random;
 import java.time.Year;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-/* 
- * Luokka Student:
- * 1. ATTRIBUUTIT
- *      - ConstantValue on tiedosto, jossa on oletusarvot
- * 2. MUODOSTIMET
- * 3. METODIT
- */
 public class Student {
 
     // 1. ATTRIBUUTIT
-    // NAMES, ID
-    private String firstName = ConstantValues.NO_NAME;
-    private String lastName = ConstantValues.NO_NAME;
-    private int id;
+    private Random random = new Random();
 
-    // CREDITS, TITLES
+    private String firstName;
+    private String lastName;
+    private int id;
     private double bachelorCredits;
     private double masterCredits;
-    private String titleOfMastersThesis = ConstantValues.NO_TITLE;
-    private String titleOfBachelorThesis = ConstantValues.NO_TITLE;
 
-    // YEARS, BIRTHDATE
-    private int startYear = Year.now().getValue();
+    private String titleOfMasterThesis;
+    private String titleOfBachelorThesis;
+    private int startYear;
     private int graduationYear;
-    private String birthDate = "\"" + ConstantValues.NO_BIRTHDATE + "\"";
+    private String birthDate;
 
     // 2. MUODOSTIMET
 
-    // Asettaa setId:n, mutta muuten joudutaan käyttämään settereitä
     public Student() {
-        setId(getRandomId());
+        this(ConstantValues.NO_NAME, ConstantValues.NO_NAME);
     }
 
-    /*
-     * Asettaa setId:n, sekä parametrien avulla asettaa nimen ja sukunimen. Muuten
-     * joudutaan käyttämään settereitä
-     */
     public Student(String lname, String fname) {
-        setId(getRandomId());
-        setFirstName(fname);
-        setLastName(lname);
+        firstName = null != fname ? fname : ConstantValues.NO_NAME;
+        lastName = null != lname ? lname : ConstantValues.NO_NAME;
+        id = getRandomId();
+        bachelorCredits = 0;
+        masterCredits = 0;
+        titleOfMasterThesis = ConstantValues.NO_TITLE;
+        titleOfBachelorThesis = ConstantValues.NO_TITLE;
+        startYear = Year.now().getValue();
+        birthDate = "\"" + ConstantValues.NO_BIRTHDATE + "\"";
     }
 
     // 3. METODIT
@@ -99,12 +87,13 @@ public class Student {
      * MIN, jos se on niin se asettaa sen id:n arvoksi. Muutoin ei aseta mitään.
      */
     public void setId(final int id) {
-        if (id < ConstantValues.MAX_ID && id > ConstantValues.MIN_ID) {
+        if (id >= ConstantValues.MIN_ID && id <= ConstantValues.MAX_ID) {
             this.id = id;
         }
     }
 
     // =============== NAMES, ID (END) ===============
+
     // =============== CREDITS, TITLES ===============
 
     // getBachelorCredits getteri
@@ -118,7 +107,7 @@ public class Student {
      * ole pienempää tai suurempaa kuin 0 ja 300
      */
     public void setBachelorCredits(final double bachelorCredits) {
-        if (bachelorCredits >= ConstantValues.MIN_CREDIT && bachelorCredits <= ConstantValues.MAX_CREDITS) {
+        if (bachelorCredits >= ConstantValues.MIN_CREDITS && bachelorCredits <= ConstantValues.MAX_CREDITS) {
             this.bachelorCredits = bachelorCredits;
         }
     }
@@ -134,21 +123,20 @@ public class Student {
      * ole pienempää tai suurempaa kuin 0 ja 300
      */
     public void setMasterCredits(final double masterCredits) {
-        if (masterCredits >= ConstantValues.MIN_CREDIT && masterCredits <= ConstantValues.MAX_CREDITS) {
+        if (masterCredits >= ConstantValues.MIN_CREDITS && masterCredits <= ConstantValues.MAX_CREDITS) {
             this.masterCredits = masterCredits;
         }
     }
 
-    // getTitleOfMastersThesis getteri
-    public String getTitleOfMastersThesis() {
-        return titleOfMastersThesis;
+    // getTitleOfMasterThesis getteri
+    public String getTitleOfMasterThesis() {
+        return titleOfMasterThesis;
     }
 
     // Asettaa titlen titleOfMastersThesis muuttujaan
-    public void setTitleOfMastersThesis(String titleOfMastersThesis) {
-        if (titleOfMastersThesis != null) {
-            this.titleOfMastersThesis = titleOfMastersThesis;
-        }
+    public void setTitleOfMasterThesis(String titleOfMasterThesis) {
+        if (titleOfMasterThesis != null)
+            this.titleOfMasterThesis = titleOfMasterThesis;
     }
 
     // getTitleOfBachelorThesis getteri
@@ -177,8 +165,7 @@ public class Student {
      * tulevaisuudessa
      */
     public void setStartYear(final int startYear) {
-        int currentYear = Year.now().getValue();
-        if (startYear > 2000 && startYear <= currentYear) {
+        if (startYear > 2000 && startYear <= Year.now().getValue()) {
             this.startYear = startYear;
         }
     }
@@ -189,11 +176,10 @@ public class Student {
      * nykyhetkeen.
      */
     public int getStudyYears() {
-        int currentYear = Year.now().getValue();
         if (graduationYear != 0) {
             return graduationYear - startYear;
         } else {
-            return currentYear - startYear;
+            return Year.now().getValue() - startYear;
         }
     }
 
@@ -209,30 +195,31 @@ public class Student {
      * nykyisyys
      */
     public String setGraduationYear(final int graduationYear) {
-        int currentYear = Year.now().getValue();
-        if (canGraduate()) {
-            if (startYear < graduationYear && graduationYear < currentYear) {
-                this.graduationYear = graduationYear;
-                return "Ok";
-            } else {
-                return "Check graduation year";
-            }
-        } else {
+        if (!canGraduate())
             return "Check the required studies";
-        }
+        if (graduationYear < startYear || graduationYear > Year.now().getValue())
+            return "Check graduation year";
+
+        this.graduationYear = graduationYear;
+        return "Ok";
+    }
+
+    // getBirthDate palauttaa birthDate arvon
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    // setBirthDate asettaa arvon
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     /*
      * hasGraduated palauttaa totuusarvon. Palauttaa arvon valmistumis vuoden
      * perusteella.
-     * 
      */
     public boolean hasGraduated() {
-        if (graduationYear != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return graduationYear != 0;
     }
 
     /*
@@ -240,26 +227,43 @@ public class Student {
      * muuttujaan syntymäpäivän henkilötunnuksesta formaattiin dd.mm.yyyy.
      */
     public String setPersonId(final String personId) {
-        String formattedPersonId = personId.substring(0, 6);
-        String x = "";
-        if (checkPersonIDNumber(personId) == true && checkBirthdate(personId) == true) {
+        if (checkPersonIDNumber(personId)) {
+            try {
+                StringBuilder date = new StringBuilder();
+                date.append(personId.substring(0, 2) + ".");
+                date.append(personId.substring(2, 4) + ".");
+                date.append(getYear(personId.substring(4, 6), personId.substring(6, 7)));
+                String dateString = date.toString();
 
-            if (checkValidCharacter(personId) == true) {
-                try {
-                    Date date = new SimpleDateFormat("ddMMyy").parse(formattedPersonId);
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-                    this.birthDate = formatter.format(date);
-                    x = "Ok";
-                } catch (Exception e) {
-                    x = "Virhe formalisoinnissa " + e;
+                if (checkBirthDate(dateString)) {
+                    if (checkValidCharacter(personId)) {
+                        setBirthDate(dateString);
+                        return "Ok";
+                    }
+                    return ConstantValues.INCORRECT_CHECKMARK;
                 }
-            } else {
-                x = ConstantValues.INCORRECT_CHECKMARK;
+                return ConstantValues.INVALID_BIRTHDAY;
+            } catch (RuntimeException e) {
+                return ConstantValues.INVALID_BIRTHDAY;
             }
-        } else {
-            x = ConstantValues.INVALID_BIRTHDAY;
         }
-        return x;
+        return ConstantValues.INVALID_BIRTHDAY;
+    }
+
+    private String getYear(String yearEnd, String centuryCharacter) {
+        if (Character.compare(yearEnd.charAt(0), '-') == 0)
+            throw new RuntimeException("Invalid year");
+
+        switch (centuryCharacter) {
+            case "+":
+                return "18" + yearEnd;
+            case "-":
+                return "19" + yearEnd;
+            case "A":
+                return "20" + yearEnd;
+            default:
+                throw new RuntimeException("Invalid century character");
+        }
     }
 
     // =============== YEARS, BIRTHDATE, GRADUATE (END) ===============
@@ -270,21 +274,7 @@ public class Student {
      * ConstantValues.MIN_ID ja palauttaa generoidun arvon
      */
     private int getRandomId() {
-        Random randomNumber = new Random();
-        return randomNumber.nextInt(ConstantValues.MAX_ID) + ConstantValues.MIN_ID;
-    }
-
-    /*
-     * OMA METODI
-     * Palauttaa totuusarvon jos credittejä on haluttu määrä. Näkyy tulostuksessa
-     * (x ? y : z) menetelmänä
-     */
-    private boolean missingCredits(double value, double wantedValue) {
-        if (value < wantedValue) {
-            return false;
-        } else {
-            return true;
-        }
+        return random.nextInt(ConstantValues.MIN_ID, ConstantValues.MAX_ID + 1);
     }
 
     /*
@@ -292,13 +282,9 @@ public class Student {
      * Tarkistaa opintopisteiden vaadittavan määrän ja opinnäytetyön otsikoinnin
      */
     private boolean canGraduate() {
-        boolean x = false;
-        if (bachelorCredits >= ConstantValues.BACHELOR_CREDITS && masterCredits >= ConstantValues.MASTER_CREDITS) {
-            if (titleOfBachelorThesis != ConstantValues.NO_TITLE && titleOfMastersThesis != ConstantValues.NO_TITLE) {
-                x = true;
-            }
-        }
-        return x;
+        return bachelorCredits >= ConstantValues.BACHELOR_CREDITS && masterCredits >= ConstantValues.MASTER_CREDITS
+                && !titleOfBachelorThesis.equals(ConstantValues.NO_TITLE)
+                && !titleOfMasterThesis.equals(ConstantValues.NO_TITLE);
     }
 
     /*
@@ -325,15 +311,7 @@ public class Student {
      * 18-vuotta, eli vasta maaliskuun ensimmäisenä päivänä.
      */
     private boolean checkLeapYear(int year) {
-        if (year % 400 == 0) {
-            return true;
-        } else if (year % 100 == 0) {
-            return false;
-        } else if (year % 4 == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
     /*
@@ -366,24 +344,64 @@ public class Student {
      * Tarkistaa annetun pvm että se päivät eivät mm ole enempää kuin 31 ja
      * kuukaudet enempää kuin 12 ja vuodet eivät ole negatiivisia
      */
-    private boolean checkBirthdate(final String date) {
-        int karkauspaivat[] = new int[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-        int days = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(2, 4));
-        int years = Integer.parseInt(date.substring(4, 6));
-        boolean x = false;
-        if (checkLeapYear(years) == true) {
-            karkauspaivat[1] = 29;
+    private boolean checkBirthDate(final String date) {
+        try {
+            String[] dates = date.split("\\.");
+            int day = Integer.parseInt(dates[0]);
+            int month = Integer.parseInt(dates[1]);
+            int year = Integer.parseInt(dates[2]);
+
+            if (month < 1 || month > 12)
+                return false;
+
+            return checkDay(day, month, year);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return false;
         }
-        if (years >= 0) {
-            if (month <= 12 && month >= 1) {
-                if (karkauspaivat[month - 1] >= days && days >= 1) {
-                    x = true;
-                }
-            }
-        }
-        return x;
     }
+
+    private boolean checkDay(int day, int month, int year) {
+        if (day < 1)
+            return false;
+
+        switch (month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return day <= 31;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return day <= 30;
+            case 2:
+                if (checkLeapYear(year))
+                    return day <= 29;
+                return day <= 28;
+            default:
+                throw new RuntimeException("Invalid month");
+        }
+    }
+
+    private boolean checkBachelor() {
+        if (bachelorCredits < ConstantValues.BACHELOR_CREDITS) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkMaster() {
+        if (masterCredits < ConstantValues.MASTER_CREDITS) {
+            return false;
+        }
+        return true;
+    }
+
     // =============== PRIVATE METHDOS (END) ===============
     // =============== toString PRINT ===============
 
@@ -403,26 +421,22 @@ public class Student {
 
     public String toString() {
         return String.format(
-                "Student id: %d\nFirstName: %s, LastName: %s\nDate of birth: %s\nStatus: %s\nStartYear: %s (studies have lasted for %s years)\nBachelorCredits: %s ==> %s\nTitleOfBachelorThesis: \"%s\"\nMasterCredits: %s ==> %s\nTitleOfMastersThesis: \"%s\"\n",
+                "Student id: %d\nFirstName: %s, LastName: %s\nDate of birth: %s\nStatus: %s\nStartYear: %s (studies lasted for %s years)\nBachelorCreadits: %s ==> %s\nTitleOfBachelorThesis: \"%s\"\nMasterCredits: %s ==> %s\nTitleOfMastersThesis: \"%s\"\n",
                 getId(),
-                getFirstName(),
-                getLastName(),
-                birthDate,
+                getFirstName(), getLastName(), getBirthDate(),
                 hasGraduated() ? String.format("The student has graduated in %s", getGraduationYear())
                         : "The student has not graduated, yet",
-                getStartYear(),
-                getStudyYears(),
-                getBachelorCredits(),
-                missingCredits(bachelorCredits, ConstantValues.BACHELOR_CREDITS)
-                        ? String.format("All required bachelor credits completed (%s/180)", bachelorCredits)
+                getStartYear(), getStudyYears(), getBachelorCredits(),
+                checkBachelor()
+                        ? String.format("All required bachelor credits completed (%s/180.0)", getBachelorCredits())
                         : String.format("Missing bachelor credits %s (%s/180.0)",
-                                ConstantValues.BACHELOR_CREDITS - bachelorCredits, bachelorCredits),
+                                ConstantValues.BACHELOR_CREDITS - getBachelorCredits(), getBachelorCredits()),
                 getTitleOfBachelorThesis(), getMasterCredits(),
-                missingCredits(bachelorCredits, ConstantValues.BACHELOR_CREDITS)
-                        ? String.format("All required bachelor credits completed (%s/120)", masterCredits)
+                checkMaster()
+                        ? String.format("All required bachelor credits completed (%s/120.0)", getMasterCredits())
                         : String.format("Missing bachelor credits %s (%s/120.0)",
-                                ConstantValues.BACHELOR_CREDITS - masterCredits, masterCredits),
-                getTitleOfMastersThesis());
+                                ConstantValues.MASTER_CREDITS - getMasterCredits(), getMasterCredits()),
+                getTitleOfMasterThesis());
     }
 
     // =============== toString PRINT (END) ===============
