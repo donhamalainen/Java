@@ -1,0 +1,87 @@
+1. Create a student using the constructor with no parameters
+
+2. Create 11 Courses with the following data (see the Course class and the constructor(s))…
+
+Course 1: name = "Programming 1", courseCode = 811104, courseBase = 'P', courseType = 1,
+period = 1, credits = 5.0, numericGrade = true
+Course 2: name = "All kinds of basic studies", courseCode = 112233, courseBase = 'P', courseType = 1,
+period = 2, credits = 45.0, numericGrade = true
+Course 3: name = "More basic studies", courseCode = 223344, courseBase = 'a', courseType = 1,
+period = 1, credits = 50.5, numericGrade = true
+Course 4: name = "Even more basic studies", courseCode = 556677, courseBase = 'a', courseType = 0,
+period = 3, credits = 50.0, numericGrade = true
+Course 5: name = "Final basic studies", courseCode = 123123, courseBase = 'A', courseType = 1,
+period = 4, credits = 50.5, numericGrade = true
+Course 6: name = "Programming 2", courseCode = 616161, courseBase = 'A', courseType = 1,
+period = 3, credits = 25.0, numericGrade = true
+Course 7: name = "All kinds of master studies", courseCode = 717171, courseBase = 'P', courseType = 0,
+period = 2, credits = 45.0, numericGrade = true
+Course 8: name = "More master studies", courseCode = 818181, courseBase = 'A', courseType = 1,
+period = 1, credits = 25.0, numericGrade = true
+Course 9: name = "Even more master studies ", courseCode = 919191, courseBase = 'S', courseType = 1,
+period = 3, credits = 20.0, numericGrade = true
+Course 10: name = "Extra master studies", courseCode = 666666, courseBase = 'S', courseType = 0,
+period = 5, credits = 8.0, numericGrade = false
+Course 11: name = "Final master studies", courseCode = 888888, courseBase = 'S', courseType = 1,
+period = 5, credits = 18.0, numericGrade = false
+
+3. Create StudentCourses from the courses above with the following data (see the StudentCourse
+class and the constructor(s))…
+StudentCourse 1: course 1, 1, 2013
+StudentCourse 2: course 2, 1, 2014
+StudentCourse 3: course 3, 1, 2015
+StudentCourse 4: course 4, 4, 2016
+StudentCourse 5: course 5, 5, 2017
+StudentCourse 6: course 6, 1, 2018
+StudentCourse 7: course 7, 1, 2019
+StudentCourse 8: course 8, 2, 2020
+StudentCourse 9: course 9, 0, 2021
+StudentCourse 10: course 10, ‘A’, 2021
+StudentCourse 11: course 11, ‘f’, 2022
+
+4. Create an array of bachelor StudentCourses from the first five StudentCourses
+
+5. Create an array of master StudentCourses from the remaining six StudentCourses
+
+6. Set the degreeTitle of the bachelor studies of the student to “Bachelor of Science”
+7. Set the degreeTitle of the master studies of the student to “Master of Science”
+
+8. Set the title of the bachelor thesis of the student to “Bachelor thesis title”
+9. Set the title of the master thesis of the student to “Masters thesis title”
+
+10. Add the bachelor courses (see step 4) to bachelor studies for the student
+11. Add the master courses (see step 5) to master studies for the student
+
+12. Set the start year of the student to 2001
+13. Set graduation year of the student to 2020
+
+14. Set the first name of the student to “Donald”
+15. Set the last name of the student to “Duck”
+
+16. Print the details of the student using toString method.
+---------
+17. Set birthdate of the student to “230498-045T”
+18. Set the title of the bachelor thesis of the student to “Christmas - The most wonderful time of
+the year”
+
+19. Set the title of the master thesis of the student to “Dreaming of a white Christmas”
+
+20. Print the degrees of the student (use method printDegrees)
+
+21. Set the grade of the course 919191S to 3 for the student
+
+22. Print the details of the student using toString method.
+23. Print the degrees of the student (use method printDegrees)
+24. Print the courses of the student use method (printCourses)
+
+25. Set the grade of the course 888888S (the last StudentCourse course) of the student to ‘X’
+26. Print the details of the StudentCourse 888888S.
+
+27. Set the grade of the course 888888S (the last StudentCourse course) of the student to ‘a’
+28. Print the details of the StudentCourse 888888S.
+
+29. Set the grade of the course 811104P (the first StudentCourse course) of the student to 6
+30. Print the details of the StudentCourse 811104P.
+
+31. Set the grade of the course 811104P (the first StudentCourse course) of the student to 5
+32. Print the details of the StudentCourse 811104P.
