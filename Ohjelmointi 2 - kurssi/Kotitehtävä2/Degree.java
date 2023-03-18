@@ -2,7 +2,7 @@ public class Degree {
     /* ATTRIBUUTIT */
 
     private static final int MAX_COURSES = 50;
-    private int count;
+    private int count = 0;
     private String degreeTitle = ConstantValues.NO_TITLE;
     private String titleOfThesis = ConstantValues.NO_TITLE;
     private StudentCourse[] myCourses = new StudentCourse[MAX_COURSES];
@@ -23,8 +23,10 @@ public class Degree {
      * addStudentCourse (see below).
      */
     public void addStudentCourses(StudentCourse[] courses) {
-        for (StudentCourse input : courses) {
-            addStudentCourse(input);
+        if (courses != null) {
+            for (StudentCourse input : courses) {
+                addStudentCourse(input);
+            }
         }
     }
 
@@ -37,11 +39,10 @@ public class Degree {
     public boolean addStudentCourse(StudentCourse course) {
         if (course != null && count < MAX_COURSES) {
             // Asettaa kurssin taulukkoon
-            this.myCourses[count] = course;
+            myCourses[count] = course;
             count++;
             return true;
         }
-
         return false;
     }
 
@@ -78,8 +79,7 @@ public class Degree {
         double count = 0;
         for (StudentCourse courses : myCourses) {
             if (courses != null && (base == 'A' || base == 'S' || base == 'P')) {
-                System.out.println(courses.getCourse().getCourseCode().charAt(6));
-                if (courses.getCourse().getCourseCode().charAt(6) == base) {
+                if ((courses.getCourse().getCourseBase() == base) && isCourseCompleted(courses)) {
                     count += courses.getCourse().getCredits();
                 }
 
@@ -97,7 +97,7 @@ public class Degree {
         double count = 0;
         for (StudentCourse courses : myCourses) {
             if (courses != null && (courseType == 0 || courseType == 1)) {
-                if (courses.getCourse().getCourseType() == courseType) {
+                if (courses.getCourse().getCourseType() == courseType && isCourseCompleted(courses)) {
                     count += courses.getCourse().getCredits();
                 }
             }
@@ -110,13 +110,13 @@ public class Degree {
      * completed courses
      */
     public double getCredits() {
-        double count = 0;
+        double creditCount = 0.0;
         for (StudentCourse courses : myCourses) {
-            if (courses != null) {
-                count += courses.getCourse().getCredits();
+            if (courses != null && isCourseCompleted(courses)) {
+                creditCount += courses.getCourse().getCredits();
             }
         }
-        return count;
+        return creditCount;
     }
 
     // ================ PRIVATE METHODS ================
@@ -136,8 +136,7 @@ public class Degree {
      * StudentCourse class).
      */
     private boolean isCourseCompleted(StudentCourse c) {
-        if (c != null && (c.isPassed()
-                && (c.getGradeNum() <= 5 || ((char) c.getGradeNum() == 'A' || (char) c.getGradeNum() == 'a')))) {
+        if (c != null && c.isPassed()) {
             return true;
         }
         return false;
@@ -152,7 +151,7 @@ public class Degree {
         int x = 1;
         for (StudentCourse course : c) {
             if (course != null) {
-                formatted += String.format("\n%10d. %s]", x++, course);
+                formatted += String.format("\n\t%d. %s]", x++, course);
             }
         }
         return formatted;

@@ -1,5 +1,4 @@
-/* KIRJASTO */
-/* KIRJASTO END*/
+
 public class PersonID {
     /* ATTRIBUUTIT */
     private String birthDate = ConstantValues.NO_BIRTHDATE;
@@ -41,10 +40,12 @@ public class PersonID {
             String days = personID.substring(0, 2);
             String month = personID.substring(2, 4);
             String year = personID.substring(4, 6);
-            if (checkBirthdate(personID)) {
+            year = checkYear(year, personID.charAt(6));
+            String formattedDate = (days + "." + month + "." + year);
+
+            if (checkBirthdate(formattedDate)) {
                 if (checkValidCharacter(personID)) {
-                    year = checkYear(year, personID.charAt(6));
-                    this.birthDate = days + "." + month + "." + year;
+                    this.birthDate = formattedDate;
                     return "Ok";
                 }
                 return ConstantValues.INCORRECT_CHECKMARK;
@@ -110,18 +111,19 @@ public class PersonID {
      * for the given month. In the possible special case off
      */
     private boolean checkBirthdate(final String date) {
+        if (date.length() != 10) {
+            return false;
+        }
         int days = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(2, 4));
-        int year = Integer.parseInt(date.substring(4, 6));
+        int month = Integer.parseInt(date.substring(3, 5));
+        int year = Integer.parseInt(date.substring(6, 10));
         if (year >= 0 && (month > 0 && month <= 12) && (days > 0 && days <= 31)) {
             return checkDay(days, month, year);
+
         }
         return false;
     }
 
-    /*
-     * 
-     */
     private boolean checkDay(int day, int month, int year) {
         if (day < 1)
             return false;

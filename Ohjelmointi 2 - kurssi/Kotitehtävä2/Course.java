@@ -1,12 +1,12 @@
 public class Course {
     /* ATTRIBUUTIT */
 
-    private String name = ConstantValues.NO_NAME;
-    private String courseCode = "\"Not available\"";
+    private String name;
+    private String courseCode;
     private Character courseBase;
     private int courseType;
     private int period;
-    private double credits;
+    private double credits = ConstantValues.MIN_CREDITS;
     private boolean numericGrade;
 
     /* ATTRIBUUTIT END */
@@ -15,7 +15,6 @@ public class Course {
 
     // Parameter-less constructor (no functionality).
     public Course() {
-
     }
 
     /*
@@ -36,7 +35,13 @@ public class Course {
 
     // The constructor must set the attribute values.
     public Course(Course course) {
-
+        this.name = course.name;
+        this.courseBase = course.courseBase;
+        this.courseType = course.courseType;
+        this.courseCode = course.courseCode;
+        this.credits = course.credits;
+        this.numericGrade = course.numericGrade;
+        this.period = course.period;
     }
 
     /* MUODOSTIN END */
@@ -50,7 +55,7 @@ public class Course {
 
     // The method will set the name of the course if the name is not empty or null.
     public void setName(String name) {
-        if (name != null) {
+        if (name != null && !name.isEmpty()) {
             this.name = name;
         }
     }
@@ -88,10 +93,10 @@ public class Course {
      * set the courseBase.
      */
     public void setCourseCode(final int courseCode, Character courseBase) {
-
         if ((0 < courseCode && courseCode < 1000000) && (courseBase == 'A' || courseBase == 'P' || courseBase == 'S'
                 || courseBase == 'a' || courseBase == 'p' || courseBase == 's')) {
-            this.courseCode = String.valueOf(courseCode) + Character.toUpperCase(courseBase);
+            this.courseBase = Character.toUpperCase(courseBase);
+            this.courseCode = String.valueOf(courseCode) + this.courseBase;
         }
     }
 
@@ -138,7 +143,7 @@ public class Course {
      * (MIN_CREDITS <= credits <= MAX_COURSE_CREDITS)
      */
     private void setCredits(final double credits) {
-        if (ConstantValues.MIN_CREDITS <= credits && credits <= ConstantValues.MAX_CREDITS) {
+        if (ConstantValues.MIN_CREDITS <= credits && credits <= ConstantValues.MAX_COURSE_CREDITS) {
             this.credits = credits;
         }
     }
@@ -150,11 +155,10 @@ public class Course {
      * object of type Course.
      */
     public String toString() {
-        return String.format("[%s (%s cr), \"%s\", %s, period: %s.]", courseCode, credits, name, getCourseTypeString(),
+        return String.format("[%s (%5.2f cr), \"%s\". %s, period: %s].", courseCode, credits, name,
+                getCourseTypeString(),
                 period);
     }
 
     /* METODIT END */
 }
-
-// JATKA {}

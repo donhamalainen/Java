@@ -8,7 +8,7 @@ import java.time.Year;
 /* KIRJASTOT END */
 public class Student {
     /* ATTRIBUUTIT */
-    Random random = new Random();
+    private Random random = new Random();
     private String firstName = ConstantValues.NO_NAME;
     private String lastName = ConstantValues.NO_NAME;;
     private int id;
@@ -30,7 +30,6 @@ public class Student {
      * The array elements are created here.
      */
     public Student() {
-        this(ConstantValues.NO_NAME, ConstantValues.NO_NAME);
         for (int i = 0; i < degrees.length; i++) {
             degrees[i] = new Degree();
         }
@@ -42,9 +41,9 @@ public class Student {
      * the above version of the constructor).
      */
     public Student(String lname, String fname) {
+        this();
         setFirstName(fname);
-        setLastName(fname);
-        setId(getRandomId());
+        setLastName(lname);
     }
     /* MUODOSTIMET END */
 
@@ -121,14 +120,14 @@ public class Student {
      * • both cases are fine, the method will return “Ok”
      */
     public String setGraduationYear(final int graduationYear) {
-        if (!canGraduate())
-            return "Check the required studies";
-        if (graduationYear < startYear || graduationYear > Year.now().getValue())
+        if (!canGraduate()) {
+            return "Check amount of required credits";
+        } else if (graduationYear < startYear || graduationYear > Year.now().getValue()) {
             return "Check graduation year";
-
-        this.graduationYear = graduationYear;
-        return "Ok";
-
+        } else {
+            this.graduationYear = graduationYear;
+            return "Ok";
+        }
     }
 
     /*
@@ -150,8 +149,9 @@ public class Student {
      */
     public boolean addCourse(final int i, StudentCourse course) {
         if ((i >= 0 && i <= degreeCount) && (course != null)) {
-            degrees[i].addStudentCourse(course);
-            return true;
+            if (degrees[i].addStudentCourse(course)) {
+                return true;
+            }
         }
         return false;
     }
@@ -165,10 +165,11 @@ public class Student {
      */
     public int addCourses(final int i, StudentCourse[] courses) {
         int count = 0;
-
-        for (int k = 0; k < courses.length; k++) {
-            if (addCourse(i, courses[k])) {
-                count++;
+        if (courses != null) {
+            for (int k = 0; k < courses.length; k++) {
+                if (count < 50 && courses[k] != null && addCourse(i, courses[k])) {
+                    count++;
+                }
             }
         }
         return count;
@@ -184,7 +185,7 @@ public class Student {
             if (result != null) {
                 for (StudentCourse course : result.getCourses()) {
                     if (course != null) {
-                        System.out.println(course.getCourse());
+                        System.out.println(course.toString() + "]");
                     }
                 }
             }
@@ -210,9 +211,7 @@ public class Student {
      */
     public void setTitleOfThesis(final int i, String title) {
         if ((0 <= i && i < degreeCount) && title != null) {
-            for (Degree result : degrees) {
-                result.setTitleOfThesis(title);
-            }
+            degrees[i].setTitleOfThesis(title);
         }
     }
 
@@ -230,7 +229,7 @@ public class Student {
      */
     public String setBirthDate(String personId) {
         PersonID person = new PersonID();
-        if (person != null) {
+        if (personId != null) {
             if (person.setPersonID(personId) == "Ok") {
                 this.birthDate = person.getBirthDate();
                 return this.birthDate;
@@ -261,11 +260,12 @@ public class Student {
         }
     }
 
+    // ========= PRIVATE METHODS =========
+
     // The method will calculate a random integer for the range 1-100 (inclusive).
-    public int getRandomId() {
+    private int getRandomId() {
         return random.nextInt(ConstantValues.MIN_ID, ConstantValues.MAX_ID);
     }
-    // ========= PRIVATE METHODS =========
 
     /*
      * The method will check the required
@@ -277,10 +277,10 @@ public class Student {
      */
 
     private boolean canGraduate() {
-
-        return degrees[0].getCredits() >= ConstantValues.BACHELOR_CREDITS
-                && degrees[1].getCredits() >= ConstantValues.MASTER_CREDITS;
-
+        return ((degrees[0].getCredits() >= ConstantValues.BACHELOR_CREDITS
+                && degrees[1].getCredits() >= ConstantValues.MASTER_CREDITS)
+                && (!degrees[0].getTitleOfThesis().equals(ConstantValues.NO_TITLE)
+                        && !degrees[1].getTitleOfThesis().equals(ConstantValues.NO_TITLE)));
     }
 
     /*
@@ -314,11 +314,35 @@ public class Student {
         return degrees[i].getTitleOfThesis();
     }
 
+    /*
+     * OMA METODI
+     * 
+     */
+    private String checkBachelor() {
+        if (degrees[0].getCredits() < ConstantValues.BACHELOR_CREDITS) {
+            return String.format("Missing bachelor's credits %.1f (%.1f/180.0)",
+                    ConstantValues.BACHELOR_CREDITS - degrees[0].getCredits(), degrees[0].getCredits());
+        }
+        return String.format("Total bachelor credits completed (%.1f/180.0)", degrees[0].getCredits());
+    }
+
+    /*
+     * OMA METODI
+     * 
+     */
+    private String checkMaster() {
+        if (degrees[1].getCredits() < ConstantValues.MASTER_CREDITS) {
+            return String.format("Missing master's credits %.1f (%.1f/120.0)",
+                    ConstantValues.MASTER_CREDITS - degrees[1].getCredits(), degrees[1].getCredits());
+        }
+        return String.format("Total master's credits completed (%.1f/120.0)", degrees[1].getCredits());
+    }
+
     // ======= PRIVATE METHODS END =======
 
     public String toString() {
         return String.format(
-                "Student id: %d\n\tFirst name: %s, Last name: %s\n\tDate of birth: %s\n\tStatus: %s\n\tStart year: %s (studies have lasted for %s years)\n\tTotal credits: %s\n\tBachelor credits: %s\n\t\tTotal bachelor credits completed (%s/180.0)\n\t\tTitle of BSc Thesis: \"%s\"\n\tMaster credits: %s\n\t\tTotal master's credits completed (%s/120.0)\n\t\tTitle of MSc Thesis: \"%s\"",
+                "Student id: %d\n\tFirst name: %s, Last name: %s\n\tDate of birth: %s\n\tStatus: %s\n\tStart year: %s (studies have lasted for %s years)\n\tTotal credits: %.1f\n\tBachelor credits: %.1f\n\t\t%s\n\t\tTitle of BSc Thesis: \"%s\"\n\tMaster credits: %.1f\n\t\t%s\n\t\tTitle of MSc Thesis: \"%s\"",
                 id,
                 firstName,
                 lastName, birthDate,
@@ -327,7 +351,7 @@ public class Student {
                 startYear,
                 getStudyYears(),
                 credits(),
-                calcCredits(0), calcCredits(0), getThesis(0), calcCredits(1), calcCredits(1), getThesis(1));
+                calcCredits(0), checkBachelor(), getThesis(0), calcCredits(1), checkMaster(), getThesis(1));
     }
 
     /* METODIT END */

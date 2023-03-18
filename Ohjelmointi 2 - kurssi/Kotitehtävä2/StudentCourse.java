@@ -59,7 +59,8 @@ public class StudentCourse {
 
     // The method will return false if the grade is 0 or ‘F’.
     public boolean isPassed() {
-        if (gradeNum == 0 || ((char) gradeNum == 'F' || (char) gradeNum == 'f')) {
+        if (gradeNum == ConstantValues.MIN_GRADE
+                || Character.toUpperCase((char) gradeNum) == ConstantValues.GRADE_FAILED) {
             return false;
         }
         return true;
@@ -108,9 +109,11 @@ public class StudentCourse {
      * value is acceptable, the method will return true.
      */
     private boolean checkGradeValidity(final int gradeNum) {
-        char x = (char) gradeNum;
-        if ((gradeNum >= 0 && gradeNum <= 5) || (x == 'A' || x == 'a' || x == 'F' || x == 'f')) {
-            return true;
+        char x = Character.toUpperCase((char) gradeNum);
+        if (course.isNumericGrade()) {
+            return (gradeNum >= ConstantValues.MIN_GRADE && gradeNum <= ConstantValues.MAX_GRADE);
+        } else if (!course.isNumericGrade()) {
+            return (x == 'A' || x == 'F');
         }
         return false;
     }
@@ -125,19 +128,19 @@ public class StudentCourse {
     private String checkGrade(final int check) {
         char letter = (char) check;
         if (letter == 'F' || letter == 'f') {
-            return "F.";
+            return "F";
         } else if (letter == 'A' || letter == 'a') {
-            return "A.";
+            return "A";
         } else if (letter == 0) {
             return "\"Not graded\"";
         } else {
-            return String.format("%s.", gradeNum);
+            return String.format("%s", gradeNum);
         }
     }
     // ======== PRIVATE, PROTECTED METHDOS END ===========
 
     public String toString() {
-        return String.format("%s, Year: %s, Grade: %s", course, yearCompleted, checkGrade(gradeNum));
+        return String.format("%s Year: %s, Grade: %s.]", course, yearCompleted, checkGrade(gradeNum));
     }
 
     /* METODIT END */
