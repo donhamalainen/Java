@@ -1,0 +1,113 @@
+// CORRECT 
+The hidden word...
+* * * * * * * * *
+Guesses left: 5
+Guessed letters: []
+Guess a letter: e
+
+
+The hidden word...
+* e * e * * * * e
+Guesses left: 5
+Guessed letters: [e]
+Guess a letter: r
+
+
+The hidden word...
+* e * e * * * * e
+Guesses left: 4
+Guessed letters: [e, r]
+Guess a letter: r
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 3
+Guessed letters: [e, r]
+Guess a letter: r
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r]
+Guess a letter: t
+The hidden word...
+t e * e * * * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r, t]
+Guess a letter: p
+The hidden word...
+t e * e p * * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r, t, p]
+Guess a letter: h
+The hidden word...
+t e * e p h * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r, t, p, h]
+Guess a letter: l
+The hidden word...
+t e l e p h * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r, t, p, h, l]
+Guess a letter: n
+The hidden word...
+t e l e p h * n e
+Guesses left: 2
+Guessed letters: [e, r, t, p, h, l, n]
+Guess a letter: o
+Congratulations! You won!!!
+The hidden word was: "telephone"
+The hidden word...
+* * * * * * * * *
+
+// WRONG EXAMPLE 
+Guesses left: 5
+Guessed letters: []
+Guess a letter: e
+The hidden word...
+* e * e * * * * e
+
+ 
+Guesses left: 5
+Guessed letters: [e]
+Guess a letter: r
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 4
+Guessed letters: [e, r]
+Guess a letter: r
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 3
+Guessed letters: [e, r]
+Guess a letter: w
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 2
+Guessed letters: [e, r, w]
+Guess a letter: w
+The hidden word...
+* e * e * * * * e
+
+
+Guesses left: 1
+Guessed letters: [e, r, w]
+Guess a letter: å
+Sorry, you lost!
+The hidden word was: "telephone"
