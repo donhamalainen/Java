@@ -57,7 +57,9 @@ public class Handler implements HttpHandler {
         try {
             JSONObject obj = new JSONObject(text);
             System.out.println(obj);
-            db.setMessage(obj);
+
+            db.setMessage(obj, exchange.getPrincipal().getUsername());
+
             exchange.sendResponseHeaders(200, -1);
         } catch (SQLException e) {
             e.printStackTrace();

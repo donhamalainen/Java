@@ -18,10 +18,8 @@ public class Server {
     private static SSLContext myServerSSLContext(String file, String password) throws Exception {
 
         // String file, String pass
-        // char[] passphrase = "testaus".toCharArray();
         char[] passphrase = password.toCharArray();
         KeyStore ks = KeyStore.getInstance("JKS");
-        // ks.load(new FileInputStream("keystore.jks"), passphrase);
         ks.load(new FileInputStream(file), passphrase);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
@@ -39,10 +37,8 @@ public class Server {
     public static void main(String[] args) throws Exception {
         try {
             // create the http server to port 8001 with default logger
-
             HttpsServer server = HttpsServer.create(new InetSocketAddress(8001), 0);
             SSLContext sslContext = myServerSSLContext(args[0], args[1]);
-
             // server https configuration
             server.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
                 public void configure(HttpsParameters params) {
@@ -65,6 +61,7 @@ public class Server {
             System.out.println("\nServer started successfully on port 8001...");
 
         } catch (FileNotFoundException e) {
+            // Certificate file not found!
             e.printStackTrace();
             System.out.println("\nCertificate not found!");
         } catch (Exception e) {

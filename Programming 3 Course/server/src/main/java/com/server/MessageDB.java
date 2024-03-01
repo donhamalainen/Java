@@ -18,6 +18,7 @@ public class MessageDB {
     // Attributes
     private Connection dbConnection = null;
     private static MessageDB dbInstance = null;
+    private UserDB userDB = null;
 
     // Constructors
     public static synchronized MessageDB getInstance() {
@@ -32,6 +33,8 @@ public class MessageDB {
 
     private MessageDB() {
         try {
+            userDB = UserDB.getInstance();
+            // System.out.println(userDB.getUserNickname("username"));
             open("MessageDB.db");
         } catch (SQLException e) {
             System.out.println("Message Database initialization failed");
@@ -73,7 +76,7 @@ public class MessageDB {
         }
     }
 
-    public void setMessage(JSONObject message) throws SQLException {
+    public void setMessage(JSONObject message, String userNickname) throws SQLException {
         System.out.println("Entering MessageDB setMessage");
 
         String location = message.getString("locationName");
@@ -81,7 +84,10 @@ public class MessageDB {
         String city = message.getString("locationCity");
         String country = message.getString("locationCountry");
         String address = message.getString("locationStreetAddress");
-        String originalPoster = message.getString("originalPoster");
+
+        // Haetaan nickname userDB:stä
+        String originalPoster = userDB.getUserNickname(userNickname);
+
         String postingTime = message.getString("originalPostingTime");
         String latitude = message.optString("latitude");
         String longitude = message.optString("longitude");
@@ -95,7 +101,9 @@ public class MessageDB {
         messageTime.getOriginalPostingTime();
 
         String setMessageString = "insert into message " + "VALUES('" + location + "','" + description + "','" + city
-                + "','" + country + "','" + address + "','" + originalPoster + "','" + unixLong + "','" + latitude
+                + "','" + country + "','" + address + "','" + originalPoster + "','" + unixLong
+                + "','"
+                + latitude
                 + "','" + longitude + "')";
 
         Statement createStatement = dbConnection.createStatement();

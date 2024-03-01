@@ -82,6 +82,7 @@ public class UserDB {
         return true;
     }
 
+    @SuppressWarnings("resource")
     public boolean checkIfUserExists(String username) throws SQLException {
 
         Statement queryStatement = null;
@@ -97,6 +98,27 @@ public class UserDB {
             return true;
         } else {
             return false;
+        }
+    }
+
+    // Haetaan userNickname
+    @SuppressWarnings("resource")
+    public String getUserNickname(String username) throws SQLException {
+        Statement queryStatement = null;
+        ResultSet rs;
+
+        String checkUser = "SELECT userNickname FROM users where username = '" + username + "'";
+        System.out.println("Checking user");
+
+        queryStatement = dbConnection.createStatement();
+        rs = queryStatement.executeQuery(checkUser);
+
+        if (rs.next()) {
+            // Palautetaan userNickname, koska se löytyi tietokannasta
+            return rs.getString("userNickname");
+        } else {
+            // Palautetaan tyhjä merkkijono, jos käyttäjänimi ei löydy
+            return "null";
         }
     }
 
